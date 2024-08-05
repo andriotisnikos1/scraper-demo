@@ -9,13 +9,13 @@ export default function Home() {
   const [url, setUrl] = useState("");
   return (
     <React.Fragment>
-      <h1 className="text-[60px] font-bold">Scrape Check Demo</h1>
+      <h1 className="md:text-[60px] text-[30px] font-bold">Scrape Check Demo</h1>
       <div className="flex flex-col w-full items-center justify-center gap-2">
-        <div className="flex w-2/5 items-center space-x-2 p-4 bg-slate-100 rounded-lg">
+        <div className="flex w-11/12 md:w-2/5 items-center space-x-2 p-4 bg-slate-100 rounded-lg">
           <Link2Icon className="h-5 w-5" />
           <input type="text" placeholder="Enter a URL....." className="outline-none bg-transparent" onChange={(e) => setUrl(e.target.value)} />
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 px-2 flex-col md:flex-row ">
           <form action={async (f) => {
             if (!f.get("url")) return toast.error("Please enter a URL");
             const res = await scrapeCheck(f.get(url) as string);
