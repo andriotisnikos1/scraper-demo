@@ -28,6 +28,7 @@ export default function Home() {
           <form action={async (f) => {
             if (!f.get("url")) return toast.error("Please enter a URL");
             const res = await scrapeURL(f.get("url") as string);
+            if (!res) return toast.error("Failed to scrape the URL");
             const blob = new Blob([res], { type: "text/plain" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
