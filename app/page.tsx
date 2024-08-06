@@ -13,12 +13,14 @@ export default function Home() {
       <div className="flex flex-col w-full items-center justify-center gap-2">
         <div className="flex w-11/12 md:w-2/5 items-center space-x-2 p-4 bg-slate-100 rounded-lg">
           <Link2Icon className="h-5 w-5" />
-          <input type="text" placeholder="Enter a URL....." className="outline-none bg-transparent" onChange={(e) => setUrl(e.target.value)} />
+          <input type="text" placeholder="Enter a URL....." className="outline-none bg-transparent w-4/5" onChange={(e) => setUrl(e.target.value)} />
         </div>
         <div className="flex items-center gap-2 px-2 flex-col md:flex-row ">
           <form action={async (f) => {
-            if (!f.get("url")) return toast.error("Please enter a URL");
-            const res = await scrapeCheck(f.get(url) as string);
+            const inputUrl = f.get("url")
+            if (!inputUrl) return toast.error("Please enter a URL");
+            toast.loading("Checking if scraping is allowed...");
+            const res = await scrapeCheck(inputUrl as string);
             if (res) toast.success("Scraping is allowed");
             else toast.error("Scraping is not allowed");
           }}>
@@ -26,8 +28,10 @@ export default function Home() {
             <button type="submit" className="w-[250px] p-2 text-sm bg-slate-100 rounded-md ">Can i scrape that?</button>
           </form>
           <form action={async (f) => {
-            if (!f.get("url")) return toast.error("Please enter a URL");
-            const res = await scrapeURL(f.get("url") as string);
+            const inputUrl = f.get("url");
+            if (!inputUrl) return toast.error("Please enter a URL");
+            toast.loading(`Scraping %{${inputUrl}} ...`);
+            const res = await scrapeURL(inputUrl as string);
             if (!res) return toast.error("Failed to scrape the URL");
             const blob = new Blob([res], { type: "text/plain" });
             const url = URL.createObjectURL(blob);
